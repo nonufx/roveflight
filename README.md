@@ -1,46 +1,75 @@
 # Rewards Redemption Optimizer
 
-A Streamlit-based application that helps travelers find the best value airline routes using miles vs cash payments. The tool analyzes flight data to recommend optimal redemption strategies for points and miles collectors. The tool helps users maximize the value of their rewards by comparing value per mile across different route options.
+A Streamlit app that finds the best-value airline routes when paying with miles
+versus cash. It ranks both direct flights and synthetic (one-stop) itineraries by
+**value per mile**:
 
-##  User Journey
+```
+value per mile = (cash price - taxes/fees) / miles redeemed   (in cents)
+```
 
-1. **Arrive** at the application
-2. **Pick** origin/destination airports and travel dates
-3. **Choose** optimization objective ("maximize value" vs "minimum fees")
-4. **Set** optional filters (price limits, airline preferences, miles balance)
-5. **View** ranked results with value analysis
-6. **Explore** interactive charts and optional map visualization
-7. **Download** results as CSV for further analysis
-8. **Leave** feedback to help improve the tool
+A higher value per mile means each mile is buying more cash value, so it's a
+better redemption.
+
+## The data is synthetic
+
+The bundled SQLite database (`travel_data_with_miles.db`) is a **synthetic sample
+dataset**: ~860 flights across a handful of routes in August 2025, with realistic
+prices and award costs. It exists to demonstrate the routing and scoring engine,
+**not** to provide live airline pricing. Because the data is generated rather than
+scraped, some quirks exist (for example, synthetic one-stop routes often score
+better than directs because their generated mileage costs are lower).
+
+`clean_airline_names.py` is the one-off, seeded script used to replace
+placeholder/test airline names from the generator with real carriers that operate
+the same routes, so the sample stays realistic and consistent.
+
+## How the engine works
+
+1. **Direct flights** — query the database for flights matching the origin,
+   destination, and date.
+2. **Synthetic routes** — find any hub that the origin reaches and that also
+   reaches the destination on the same day, then pair first and second legs that
+   leave enough connection time (a configurable minimum layover).
+3. **Scoring** — compute value per mile for each option (summing price, miles, and
+   estimated taxes across legs for synthetic routes).
+4. **Ranking and filtering** — sort by value per mile (or minimum fees), with
+   optional filters for price ceiling, airline allow-list, and miles balance.
+
+The same engine (`recommendation_tool.py`) powers both the command-line tool and
+the Streamlit app.
 
 ## Features
 
-### Core Functionality
-- **Smart Route Search**: Find both direct flights and synthetic routes with layovers
-- **Value Optimization**: Calculate value per mile to identify best redemption opportunities
-- **Flexible Filtering**: Filter by price, airlines, and miles balance
-- **Date Range Search**: Search across multiple dates in August 2025
+- Direct and synthetic (one-stop) route search across a date range
+- Value-per-mile ranking, or a minimum-fees objective
+- Filters: price ceiling, airline allow-list, miles balance, minimum layover
+- Results table with per-leg detail and CSV export
+- Top-routes bar chart and a price-vs-miles scatter plot
+- Optional airport map (requires `airports.csv` with `iata,lat,lon` columns)
 
-### Visualizations
-- **Comparison Charts**: Bar charts showing top routes by value per mile
-- **Price vs Miles Scatter Plot**: Visualize the relationship between cost and miles required
-- **Interactive Map**: Optional airport visualization (requires airports.csv)
+## Project structure
 
-### User Experience
-- **Savings Calculator**: Shows estimated dollar savings for each route
-- **Miles Balance Integration**: Filter routes based on your available miles
-- **Modern UI**: Stripe-inspired dark theme with clean, accessible design
-- **Export Functionality**: Download filtered results as CSV
-- **Feedback System**: Submit suggestions and comments
+- `streamlit_app.py` — the web UI
+- `recommendation_tool.py` — the route engine (CLI + DataFrame API)
+- `clean_airline_names.py` — one-off data cleanup script
+- `travel_data_with_miles.db` — synthetic sample database
+- `airports.csv` — airport coordinates for the optional map
+- `style.css` — minimal styling
 
-⚠️ **Important**: For synthetic routing to work consistently, use LAX as the origin. Synthetic routes are most likely to be selected as best value with JFK or LHR destinations.
+## Running it
 
-### Date Limitations
-- **Supported Period**: August 2025 only (2025-08-01 to 2025-08-31)
-- **August 31**: Direct flights only (no layover data available)
-- **LHR Destinations**: Best results between August 2-26
+```bash
+pip install -r requirements.txt   # or: streamlit, pandas, numpy, pydeck
 
-### Missing Routes
-The following route combinations do not exist in the database:
-- DXB → LHR
-- LHR → JFK
+# web app
+streamlit run streamlit_app.py
+
+# command-line version
+python recommendation_tool.py
+```
+
+## Disclaimer
+
+For educational and demonstration purposes only. The data is synthetic and the
+output is not real travel or financial advice.

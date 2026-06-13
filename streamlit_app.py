@@ -1,9 +1,12 @@
+import os
+import re
+
 import streamlit as st
 import pandas as pd
-import os
 import numpy as np
 from datetime import date, timedelta, datetime
 import pydeck as pdk
+
 import recommendation_tool as recommendation
 
 # ---- flatten flights_json into readable columns ----
@@ -66,33 +69,30 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# Hero section
-st.markdown("""
-<div class="hero">
-    <h1>✈️ Rewards Redemption Optimizer</h1>
-    <p>Find the best value airline routes using miles vs cash</p>
-</div>
-""", unsafe_allow_html=True)
+# Page heading
+st.markdown(
+    '<div class="app-title">Rewards Redemption Optimizer</div>'
+    '<div class="app-subtitle">Find the best-value airline routes using miles versus cash, '
+    'across direct and one-stop (synthetic) itineraries.</div>',
+    unsafe_allow_html=True,
+)
 
-# Dataset Tips card
+# Notes about the sample dataset
 st.markdown("""
-<div class="tips-card" id="dataset-tips">
-    <h3>📋 Dataset Tips</h3>
+<div class="notes">
+    <h4>About this dataset</h4>
     <ul>
-        <li><strong>Origins:</strong> LAX, JFK, DXB, DFW, ORD, ATL</li>
-        <li>⚠️ <strong>For synthetic routing to work consistently, use LAX as the origin</strong></li>
-        <li><strong>Destinations:</strong> JFK, LHR, DXB, ORD, ATL, DFW</li>
-        <li>⚠️ <strong>Synthetic is most likely to be selected as best value with JFK or LHR</strong></li>
-        <li><strong>Dates:</strong> Only August 2025 is supported</li>
-        <li>– Aug 31 has no layover data (directs only)</li>
-        <li>– For LHR as destination, use Aug 2–26 for best coverage</li>
-        <li><strong>Missing routes:</strong> DXB → LHR and LHR → JFK do not exist in the DB, as well as some other pairs</li>
+        <li>This is a <strong>synthetic sample dataset</strong> for August 2025, used to demonstrate the engine. It is not live pricing.</li>
+        <li>Origins: LAX, JFK, DXB, DFW, ORD, ATL &nbsp;&middot;&nbsp; Destinations: JFK, LHR, DXB, ORD, ATL, DFW</li>
+        <li>Synthetic routes have the best coverage from LAX, and into JFK or LHR.</li>
+        <li>For LHR, use Aug 2&ndash;26 for best coverage. Aug 31 has directs only.</li>
+        <li>Some pairs (e.g. DXB &rarr; LHR, LHR &rarr; JFK) are not in the dataset.</li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
 
 # Sidebar inputs
-st.sidebar.header("🎯 Search Parameters")
+st.sidebar.header("Search parameters")
 
 # Airport selections
 origin_options = ["LAX", "JFK", "DXB", "DFW", "ORD", "ATL"]
@@ -262,7 +262,7 @@ if not errors:
     max_price_arg = None if max_price <= 0 else max_price
     
     # Search button with session state persistence
-    search_clicked = st.button("🔍 Search Routes", type="primary")
+    search_clicked = st.button("Search routes", type="primary")
     
     if search_clicked:
         df = _run_search_and_cache()
@@ -272,12 +272,7 @@ if not errors:
         df = pd.DataFrame()
     
     if df.empty:
-        st.markdown("""
-        <div class="info-card">
-            <h3>No routes found</h3>
-            <p>No routes found for these settings. Try adjusting your filters or date range.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.info("No routes found for these settings. Try adjusting your filters or date range.")
     else:
         # Process results
         # Rename and add computed columns
@@ -348,9 +343,7 @@ if not errors:
         ]
         
         # ---- Map (optional via airports.csv) ----
-        import os, re, pandas as pd, pydeck as pdk
-
-        st.markdown("### 🗺️ Map")
+        st.markdown("### Map")
 
         csv_path = "airports.csv"
         if not os.path.exists(csv_path):
@@ -413,7 +406,7 @@ if not errors:
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            st.subheader("📊 Results")
+            st.subheader("Results")
             
             if view_df.empty:
                 st.info("No routes match your current filters.")
@@ -428,14 +421,14 @@ if not errors:
                 
                 # Download button
                 st.download_button(
-                    label="📥 Download CSV",
+                    label="Download CSV",
                     data=view_df.to_csv(index=False).encode("utf-8"),
                     file_name=f"recommendations_{origin}_{destination}_{start_date}_{end_date}.csv",
                     mime="text/csv"
                 )
         
         with col2:
-            st.subheader("📈 Summary & Charts")
+            st.subheader("Summary")
             
             if not view_df.empty:
                 # Summary metrics

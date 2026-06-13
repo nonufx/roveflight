@@ -1,21 +1,13 @@
-:root {
-  --bg: #0b0c10;
-  --surface: #11131a;
-  --text: #eef2ff;
-  --muted: #8b949e;
-  --border: #21262d;
-  --accent: #635bff;
-  --accent-2: #7c3aed;
-}
+/* Minimal, flat styling. Intentionally restrained: one accent color, no
+   gradients or glass effects, system fonts. */
 
-.light {
-  --bg: #ffffff;
-  --surface: #f6f8fa;
-  --text: #24292f;
-  --muted: #656d76;
-  --border: #d0d7de;
-  --accent: #635bff;
-  --accent-2: #7c3aed;
+:root {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --text: #e6e8eb;
+  --muted: #9aa1ab;
+  --border: #272b33;
+  --accent: #4f7cff;
 }
 
 .stApp {
@@ -24,195 +16,87 @@
 }
 
 .block-container {
-  max-width: 1200px;
+  max-width: 1100px;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-  margin-bottom: 1.5rem;
-}
-
-.hero {
-  background: linear-gradient(135deg, rgba(99, 91, 255, 0.25), rgba(124, 58, 237, 0.25));
-  border-radius: 20px;
-  padding: 3rem 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
-  border: 1px solid var(--border);
-}
-
-.hero h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+/* Page heading */
+.app-title {
+  font-size: 1.7rem;
+  font-weight: 650;
+  margin-bottom: 0.2rem;
   color: var(--text);
 }
 
-.hero p {
-  font-size: 1.2rem;
+.app-subtitle {
   color: var(--muted);
-  margin-bottom: 0;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs: flat surfaces, single border, no rounded-pill flourishes */
+.stSelectbox > div > div,
+.stDateInput > div > div,
+.stNumberInput > div > div,
+.stTextInput > div > div,
+.stTextArea > div > div {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .stButton > button {
   background: var(--accent);
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 50px;
-  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  padding: 0.5rem 1.1rem;
   font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(99, 91, 255, 0.3);
 }
 
 .stButton > button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(99, 91, 255, 0.4);
+  background: #3f6ae6;
 }
 
-.stSelectbox > div > div {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.stDateInput > div > div {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.stNumberInput > div > div {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.stTextInput > div > div {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.stTextArea > div > div {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.stCheckbox {
-  color: var(--text);
-}
-
-.stSlider {
-  color: var(--accent);
-}
-
-.dataframe {
-  background: var(--surface);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-
-.dataframe thead th {
-  background: var(--accent);
-  color: white;
-  font-weight: 700;
-  padding: 12px 16px;
-  border: none;
-}
-
-.dataframe tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.dataframe tbody tr:hover {
-  background: rgba(99, 91, 255, 0.1);
-}
-
-.tips-card {
-  background: linear-gradient(135deg, rgba(99, 91, 255, 0.1), rgba(124, 58, 237, 0.1));
-  border: 1px solid var(--accent);
-  border-radius: 16px;
-  padding: 24px;
-  margin: 2rem 0;
-}
-
-.tips-card h3 {
-  color: var(--accent);
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.tips-card ul {
-  color: var(--text);
-  line-height: 1.6;
-}
-
-.tips-card li {
-  margin-bottom: 0.5rem;
-}
-
+/* Simple metric block */
 .metric-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 1rem;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 0.75rem;
 }
 
 .metric-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent);
+  font-size: 1.6rem;
+  font-weight: 650;
+  color: var(--text);
 }
 
 .metric-label {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.warning-card {
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 1rem 0;
+/* Notes / tips block */
+.notes {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 1.5rem;
 }
 
-.error-card {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 1rem 0;
+.notes h4 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  color: var(--text);
 }
 
-.info-card {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 1rem 0;
-}
-
-.success-card {
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 1rem 0;
+.notes ul {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
