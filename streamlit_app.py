@@ -82,7 +82,7 @@ st.markdown("""
 <div class="notes">
     <h4>About this dataset</h4>
     <ul>
-        <li>This is a <strong>synthetic sample dataset</strong> for August 2025, used to demonstrate the engine. It is not live pricing.</li>
+        <li>This dataset mixes <strong>real API-sourced flight data</strong> with <strong>synthetic data</strong> generated to fill gaps once API limits were reached (August 2025). It is for demonstration, not live pricing.</li>
         <li>Origins: LAX, JFK, DXB, DFW, ORD, ATL &nbsp;&middot;&nbsp; Destinations: JFK, LHR, DXB, ORD, ATL, DFW</li>
         <li>Synthetic routes have the best coverage from LAX, and into JFK or LHR.</li>
         <li>For LHR, use Aug 2&ndash;26 for best coverage. Aug 31 has directs only.</li>

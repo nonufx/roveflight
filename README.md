@@ -11,18 +11,20 @@ value per mile = (cash price - taxes/fees) / miles redeemed   (in cents)
 A higher value per mile means each mile is buying more cash value, so it's a
 better redemption.
 
-## The data is synthetic
+## About the data
 
-The bundled SQLite database (`travel_data_with_miles.db`) is a **synthetic sample
-dataset**: ~860 flights across a handful of routes in August 2025, with realistic
-prices and award costs. It exists to demonstrate the routing and scoring engine,
-**not** to provide live airline pricing. Because the data is generated rather than
-scraped, some quirks exist (for example, synthetic one-stop routes often score
-better than directs because their generated mileage costs are lower).
+The bundled SQLite database (`travel_data_with_miles.db`) holds ~860 flights
+across a handful of routes in August 2025. It is a **mix of real flight data
+collected via a flight-pricing API and synthetic data generated to fill coverage
+gaps** once the API rate limits were reached. It is meant to demonstrate the
+routing and scoring engine, not to serve as a complete or live pricing source.
+Because part of the data is generated, some quirks exist (for example, synthetic
+one-stop routes often score better than directs because their generated mileage
+costs are lower).
 
-`clean_airline_names.py` is the one-off, seeded script used to replace
-placeholder/test airline names from the generator with real carriers that operate
-the same routes, so the sample stays realistic and consistent.
+`clean_airline_names.py` is the one-off, seeded script used to replace leftover
+placeholder/test airline names from the generated rows with real carriers that
+operate the same routes, so the dataset stays realistic and consistent.
 
 ## How the engine works
 
@@ -71,5 +73,5 @@ python recommendation_tool.py
 
 ## Disclaimer
 
-For educational and demonstration purposes only. The data is synthetic and the
-output is not real travel or financial advice.
+For educational and demonstration purposes only. The data is partly synthetic and
+the output is not real travel or financial advice.
