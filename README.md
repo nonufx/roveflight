@@ -28,14 +28,14 @@ operate the same routes, so the dataset stays realistic and consistent.
 
 ## How the engine works
 
-1. **Direct flights** — query the database for flights matching the origin,
+1. **Direct flights**: query the database for flights matching the origin,
    destination, and date.
-2. **Synthetic routes** — find any hub that the origin reaches and that also
+2. **Synthetic routes**: find any hub that the origin reaches and that also
    reaches the destination on the same day, then pair first and second legs that
    leave enough connection time (a configurable minimum layover).
-3. **Scoring** — compute value per mile for each option (summing price, miles, and
+3. **Scoring**: compute value per mile for each option (summing price, miles, and
    estimated taxes across legs for synthetic routes).
-4. **Ranking and filtering** — sort by value per mile (or minimum fees), with
+4. **Ranking and filtering**: sort by value per mile (or minimum fees), with
    optional filters for price ceiling, airline allow-list, and miles balance.
 
 The same engine (`recommendation_tool.py`) powers both the command-line tool and
@@ -52,12 +52,12 @@ the Streamlit app.
 
 ## Project structure
 
-- `streamlit_app.py` — the web UI
-- `recommendation_tool.py` — the route engine (CLI + DataFrame API)
-- `clean_airline_names.py` — one-off data cleanup script
-- `travel_data_with_miles.db` — synthetic sample database
-- `airports.csv` — airport coordinates for the optional map
-- `style.css` — minimal styling
+- `streamlit_app.py`: the web UI
+- `recommendation_tool.py`: the route engine (CLI + DataFrame API)
+- `clean_airline_names.py`: one-off data cleanup script
+- `travel_data_with_miles.db`: synthetic sample database
+- `airports.csv`: airport coordinates for the optional map
+- `style.css`: minimal styling
 
 ## Running it
 
